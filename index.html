@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>arkalog | Python разработчик</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #00ff99;
+            --secondary: #ff00ff;
+            --bg: #1c1c1c;
+            --card-bg: #2e2e2e;
+            --text: #e0e0e0;
+        }
+        
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'JetBrains Mono', monospace;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        h1 {
+            font-size: 3em;
+            margin: 0.5em 0 0.2em;
+            color: var(--primary);
+            text-shadow: 0 0 10px var(--primary), 0 0 20px var(--primary);
+            animation: fadeIn 1.5s ease-in-out;
+        }
+        
+        h2 {
+            font-size: 1.5em;
+            margin: 0.5em 0;
+            color: var(--secondary);
+            text-shadow: 0 0 5px var(--secondary);
+        }
+        
+        .header {
+            text-align: center;
+            padding: 1em 0;
+            position: relative;
+        }
+        
+        .header::after {
+            content: '';
+            display: block;
+            width: 50%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+            margin: 1em auto;
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 0.5em;
+            margin: 1em 0;
+            padding: 0.5em;
+            background: rgba(30, 30, 30, 0.8);
+            backdrop-filter: blur(5px);
+            border-radius: 8px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .navbar a {
+            color: var(--text);
+            text-decoration: none;
+            padding: 0.3em 0.8em;
+            font-size: 0.9em;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .navbar a::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+        
+        .navbar a:hover {
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+        
+        .navbar a:hover::before {
+            width: 100%;
+        }
+        
+        .section {
+            padding: 1.5em;
+            margin: 1.5em 0;
+            background: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            display: none; /* По умолчанию все секции скрыты */
+        }
+        
+        .section.active {
+            display: block; /* Показываем активную секцию */
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Остальные стили остаются без изменений */
+        .section h2 {
+            margin-top: 0;
+            position: relative;
+            padding-bottom: 8px;
+        }
+        
+        .section h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background: var(--primary);
+        }
+        
+        .price-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1em;
+            margin: 1.5em 0;
+        }
+        
+        .price-item {
+            background: rgba(40, 40, 40, 0.7);
+            padding: 1em;
+            border-radius: 6px;
+            border-left: 3px solid var(--primary);
+            transition: all 0.3s ease;
+        }
+        
+        .price-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(0, 255, 153, 0.1);
+        }
+        
+        .price-item h3 {
+            color: var(--primary);
+            margin-top: 0;
+            font-size: 1.1em;
+        }
+        
+        .price-item .price {
+            font-weight: bold;
+            color: var(--secondary);
+            font-size: 1em;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 1.5em 0;
+            margin-top: 2em;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9em;
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1em;
+            margin: 1em 0;
+        }
+        
+        .social-link {
+            color: var(--text);
+            text-decoration: none;
+            padding: 0.4em 0.8em;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.4em;
+            font-size: 0.9em;
+        }
+        
+        .social-link:hover {
+            color: var(--primary);
+            background: rgba(0, 255, 153, 0.1);
+            transform: scale(1.03);
+        }
+        
+        .tagline {
+            font-size: 1em;
+            margin: 0.8em 0;
+            color: var(--primary);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 0.7; }
+            50% { opacity: 1; text-shadow: 0 0 8px var(--primary); }
+            100% { opacity: 0.7; }
+        }
+        
+        .scroll-indicator {
+            font-size: 1.5em;
+            animation: float 2s infinite;
+            margin: 0.8em 0;
+            opacity: 0.7;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+        
+        .scroll-indicator:hover {
+            opacity: 1;
+            color: var(--primary);
+        }
+        
+        .highlight {
+            color: var(--primary);
+            font-weight: bold;
+        }
+        
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6em;
+            margin: 0.8em 0;
+        }
+        
+        .tech-item {
+            background: rgba(0, 255, 153, 0.1);
+            color: var(--primary);
+            padding: 0.4em 0.8em;
+            border-radius: 15px;
+            font-size: 0.8em;
+            border: 1px solid var(--primary);
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+            }
+            
+            h2 {
+                font-size: 1.3em;
+            }
+            
+            .navbar {
+                flex-direction: row;
+                align-items: center;
+                font-size: 0.8em;
+                padding: 0.3em;
+            }
+            
+            .navbar a {
+                padding: 0.2em 0.5em;
+            }
+            
+            .section {
+                padding: 1em;
+                margin: 1em 0;
+            }
+            
+            .price-list {
+                grid-template-columns: 1fr;
+            }
+            
+            .tagline {
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>arkalog</h1>
+            <h2>Python разработчик</h2>
+            <div class="tagline">✦ Качественные решения под ваши потребности ✦</div>
+            
+            <div class="scroll-indicator" onclick="showSection('about')">⌄</div>
+        </header>
+        
+        <nav class="navbar">
+            <a href="#home" onclick="showSection('home')">Главная</a>
+            <a href="#about" onclick="showSection('about')">Обо мне</a>
+            <a href="#projects" onclick="showSection('projects')">Проекты</a>
+            <a href="#contact" onclick="showSection('contact')">Связь</a>
+        </nav>
+        
+        <main>
+            <section id="home" class="section active">
+                <h2>Добро пожаловать!</h2>
+                <p>Приветствую вас на моей странице. Я <span class="highlight">Python-разработчик</span> с опытом создания различных программных решений.</p>
+                <p>Здесь вы можете узнать больше о моих навыках, посмотреть примеры работ и связаться со мной для сотрудничества.</p>
+                <div class="tech-stack">
+                    <span class="tech-item">Python</span>
+                    <span class="tech-item">Telegram API</span>
+                    <span class="tech-item">Web Scraping</span>
+                    <span class="tech-item">Automation</span>
+                </div>
+            </section>
+            
+            <section id="about" class="section">
+                <h2>Обо мне</h2>
+                <p>Я занимаюсь программированием на Python более 2 лет, специализируюсь на создании:</p>
+                <ul>
+                    <li>Парсеров и автоматизированных систем</li>
+                    <li>Telegram-ботов различной сложности</li>
+                    <li>Инструментов для OSINT-исследований</li>
+                    <li>Кастомных решений под конкретные задачи</li>
+                </ul>
+                <p>Мои работы отличаются <span class="highlight">чистым кодом</span>, <span class="highlight">оптимизированной работой</span> и <span class="highlight">индивидуальным подходом</span> к каждому проекту.</p>
+            </section>
+            
+            <section id="projects" class="section">
+                <h2>Мои услуги</h2>
+                <p>Вот некоторые из проектов, которые я могу реализовать для вас:</p>
+                
+                <div class="price-list">
+                    <div class="price-item">
+                        <h3>Сноссер сессий</h3>
+                        <p>Инструмент для удаления сессий обидчика</p>
+                        <div class="price">200⭐ или 200р (Альфа Банк)</div>
+                    </div>
+                    
+                    <div class="price-item">
+                        <h3>OSINT софт</h3>
+                        <p>Программы для сбора открытой информации</p>
+                        <div class="price">250⭐ или 270р (Альфа Банк)</div>
+                    </div>
+                    
+                    <div class="price-item">
+                        <h3>Telegram бот</h3>
+                        <p>Боты любой сложности под ваши задачи</p>
+                        <div class="price">125⭐ или 175р (Альфа Банк)</div>
+                    </div>
+                </div>
+                
+                <p class="highlight">Все решения адаптируются под ваши требования и предпочтения!</p>
+            </section>
+            
+            <section id="contact" class="section">
+                <h2>Свяжитесь со мной</h2>
+                <p>Готов обсудить ваш проект и предложить оптимальное решение.</p>
+                
+                <div class="social-links">
+                    <a href="https://t.me/KACTA_KODEP" target="_blank" class="social-link">
+                        <span>Telegram</span>
+                    </a>
+                    <a href="https://t.me/OT3blBbl_ARKALOGA" target="_blank" class="social-link">
+                        <span>Отзывы</span>
+                    </a>
+                </div>
+                
+                <p>Работаю над каждым проектом <span class="highlight">ответственно</span> и <span class="highlight">внимательно</span> к деталям.</p>
+            </section>
+        </main>
+        
+        <footer class="footer">
+            <p>© 2025 arkalog | Python разработчик</p>
+            <div class="social-links">
+                <a href="https://t.me/KACTA_KODEP" target="_blank" class="social-link">
+                    <span>Связь</span>
+                </a>
+                <a href="https://t.me/OT3blBbl_ARKALOGA" target="_blank" class="social-link">
+                    <span>Отзывы</span>
+                </a>
+            </div>
+        </footer>
+    </div>
+    
+    <script>
+        // Функция для переключения секций
+        function showSection(sectionId) {
+            // Скрываем все секции
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Показываем выбранную секцию
+            const section = document.getElementById(sectionId);
+            if (section) {
+                section.classList.add('active');
+                
+                // Прокрутка к секции с небольшим отступом сверху
+                window.scrollTo({
+                    top: section.offsetTop - 80,
+                    behavior: 'smooth'
+                });
+                
+                // Обновляем URL с хэшем
+                history.pushState(null, null, `#${sectionId}`);
+            }
+        }
+        
+        // При загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            // Плавное появление всего контента
+            document.body.style.opacity = '0';
+            document.body.style.transition = 'opacity 0.5s ease-in-out';
+            
+            setTimeout(() => {
+                document.body.style.opacity = '1';
+            }, 100);
+            
+            // Проверяем хэш в URL
+            const hash = window.location.hash.substring(1);
+            if (hash && document.getElementById(hash)) {
+                showSection(hash);
+            } else {
+                // По умолчанию показываем главную страницу
+                document.querySelector('#home').classList.add('active');
+            }
+        });
+        
+        // Обработка навигации по истории браузера
+        window.addEventListener('popstate', function() {
+            const hash = window.location.hash.substring(1);
+            if (hash && document.getElementById(hash)) {
+                showSection(hash);
+            }
+        });
+    </script>
+</body>
+  </html>
