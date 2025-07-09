@@ -112,11 +112,11 @@
             background: var(--card-bg);
             border-radius: 8px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            display: none; /* По умолчанию все секции скрыты */
+            display: none; 
         }
         
         .section.active {
-            display: block; /* Показываем активную секцию */
+            display: block;
             animation: fadeIn 0.5s ease-out;
         }
         
@@ -125,7 +125,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
         
-        /* Остальные стили остаются без изменений */
+        
         .section h2 {
             margin-top: 0;
             position: relative;
@@ -344,7 +344,7 @@
                 <div class="price-list">
                     <div class="price-item">
                         <h3>Сноссер сессий</h3>
-                        <p>Инструмент для удаления сессий обидчика</p>
+                        <p>Инструмент для удаления сессий обидчика спомощью спама кодами авторизаций</p>
                         <div class="price">500⭐ или 1000р (Альфа Банк)</div>
                     </div>
                     
@@ -395,32 +395,32 @@
     </div>
     
     <script>
-        // Функция для переключения секций
+        
         function showSection(sectionId) {
-            // Скрываем все секции
+            
             document.querySelectorAll('.section').forEach(section => {
                 section.classList.remove('active');
             });
             
-            // Показываем выбранную секцию
+            
             const section = document.getElementById(sectionId);
             if (section) {
                 section.classList.add('active');
                 
-                // Прокрутка к секции с небольшим отступом сверху
+                
                 window.scrollTo({
                     top: section.offsetTop - 80,
                     behavior: 'smooth'
                 });
                 
-                // Обновляем URL с хэшем
+                
                 history.pushState(null, null, `#${sectionId}`);
             }
         }
         
-        // При загрузке страницы
+        
         document.addEventListener('DOMContentLoaded', function() {
-            // Плавное появление всего контента
+           
             document.body.style.opacity = '0';
             document.body.style.transition = 'opacity 0.5s ease-in-out';
             
@@ -428,17 +428,17 @@
                 document.body.style.opacity = '1';
             }, 100);
             
-            // Проверяем хэш в URL
+            
             const hash = window.location.hash.substring(1);
             if (hash && document.getElementById(hash)) {
                 showSection(hash);
             } else {
-                // По умолчанию показываем главную страницу
+                
                 document.querySelector('#home').classList.add('active');
             }
         });
         
-        // Обработка навигации по истории браузера
+        
         window.addEventListener('popstate', function() {
             const hash = window.location.hash.substring(1);
             if (hash && document.getElementById(hash)) {
